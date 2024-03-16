@@ -4,7 +4,6 @@ module.exports = {
   },
   webpack: {
     rules: [
-      // Add rule for Tailwind CSS
       {
         test: /\.css$/,
         use: [

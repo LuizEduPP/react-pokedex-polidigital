@@ -29,7 +29,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "craco test --silent",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -52,10 +52,12 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.10",
+    "@babel/preset-env": "^7.24.0",
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
+    "babel-jest": "^29.7.0",
     "craco-alias": "^3.0.1",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
@@ -63,5 +65,10 @@
     "typescript": "^5.2.2",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^axios$": "axios/dist/node/axios.cjs"
+    }
   }
 }
