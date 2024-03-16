@@ -23,10 +23,11 @@ const App: React.FC = () => {
         <SearchBar setSearchQuery={setSearchQuery} />
       </div>
       <div className="grid grid-cols-4 gap-4">
-        {filteredPokemons?.map((pokemon) => (
+        {filteredPokemons?.map((pokemon, index) => (
           <PokemonCard
             key={pokemon.name}
             pokemon={pokemon}
+            initialPokemonNumber={index + 1}
           />
         ))}
       </div>

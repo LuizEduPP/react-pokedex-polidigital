@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Pokemon, usePokemonDetails } from "../services/pokemonAPI";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -9,25 +9,54 @@ const formatName = (name: string) => {
 };
 
 interface PokemonCardProps {
+  key: string;
   pokemon: Pokemon;
+  initialPokemonNumber: number;
 }
 
-const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon }) => {
+const PokemonCard: React.FC<PokemonCardProps> = ({ initialPokemonNumber }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { name, url } = pokemon;
-  const { data: pokemonDetails, isLoading } = usePokemonDetails(url);
+  const [pokemonNumber, setPokemonNumber] = useState(initialPokemonNumber);
+
+  const { data: pokemonDetails, isLoading } = usePokemonDetails(
+    `https://pokeapi.co/api/v2/pokemon/${pokemonNumber}/`
+  );
 
   const handleModalClose = () => {
     setIsModalOpen(false);
   };
 
-  const pokemonNumber = url.split("/").slice(-2, -1)[0];
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "ArrowRight") {
+      setPokemonNumber((prevNumber) => prevNumber + 1);
+    } else if (event.key === "ArrowLeft") {
+      setPokemonNumber((prevNumber) => Math.max(1, prevNumber - 1));
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [pokemonNumber]);
+
+  if (!pokemonDetails) {
+    return <div>Loading...</div>;
+  }
+
+  const { name } = pokemonDetails;
   const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${pokemonNumber}.gif`;
 
   return (
     <>
       <Card>
-        <div className="p-4 flex items-center" onClick={() => setIsModalOpen(true)} tabIndex={0}>
+        <div
+          className="p-4 flex items-center"
+          onClick={() => setIsModalOpen(true)}
+          tabIndex={0}
+        >
           <Avatar className="mr-4">
             <AvatarImage src={imageUrl} alt={name} />
           </Avatar>

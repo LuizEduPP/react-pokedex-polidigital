@@ -39,9 +39,10 @@ const PokemonModalContent: React.FC<{
             {pokemonDetails?.stats && (
               <p>
                 Stats:{" "}
-                {pokemonDetails.stats.map((stat: any) => (
+                {pokemonDetails.stats.map((stat: any, index: number) => (
                   <span key={stat.stat.name}>
                     {stat.stat.name}: {stat.base_stat}
+                    {index !== pokemonDetails.stats.length - 1 && ", "}
                   </span>
                 ))}
               </p>
